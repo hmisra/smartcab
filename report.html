@@ -14162,7 +14162,7 @@ yDIzMzMzM6ui/wdnbx5DruV8BgAAAABJRU5ErkJggg==
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>The size of state space would be (2 * 4 * 4 * 4) = 128.</p>
+<p>The size of state space would be (2 * 4 * 4 * 3) = 96.</p>
 <p>I think this would be a small statespace to learn. Assuming that we run 10 steps in each trial and in each trial we explore a new state(which is not very likely) then it would take us about 13 trials to cover all the state space. By regulating the value of epsilon we can control how much random action we want the agent to take. With all this information I belive that after adjusting few parameters (epsilon) we would be able to explore all the state space within less than 500 trails as the size of the state space is very less.</p>
 
 </div>
@@ -17295,7 +17295,7 @@ Ug8hDnPmAAAAAElFTkSuQmCC
 <li><p>My agent took about 300 trials to learn and start the testing.</p>
 </li>
 <li><p>I started with epsilon value of 0.99 and decayed it using the the decay function : $$ \epsilon_{t+1} = a^t, \hspace{10px}\textrm{where a=0.99 and t is the number of trials so far}$$
-The tolerance I used was 0.05 and the learning rate was 0.05. The reason of using epsilon-tolerance of 0.99-0.05 was that with the decay function used it gives a smooth decay which in the beginneing decays quickly and then gradualy platues to a lower decay rate. This allows the agent to focus on exploration in the beginning and towards the end focus more on taking actions by looking up the Q-value of each action. Also these set of values allows the agent to run for sufficient number of trials to explore all the possible state space.</p>
+The tolerance I used was 0.05 and the learning rate was 0.5. The reason of using epsilon-tolerance of 0.99-0.05 was that with the decay function used it gives a smooth decay which in the beginneing decays quickly and then gradualy platues to a lower decay rate. This allows the agent to focus on exploration in the beginning and towards the end focus more on taking actions by looking up the Q-value of each action. Also these set of values allows the agent to run for sufficient number of trials to explore all the possible state space.</p>
 </li>
 <li><p>The improvements were huge. We can see the total bad actions do down to almost 0. Almost no major accidents. Also the Avegrage reward in the end trials is positive which is better than previous driving agent. The reliability rating reached 100%. Which was somewhere 60% for previous agent. So the imrpovements in this agent are significant.</p>
 </li>
@@ -17341,8 +17341,15 @@ The tolerance I used was 0.05 and the learning rate was 0.05. The reason of usin
 <ol>
 <li><p>For almost all the states the policy seems correct.</p>
 </li>
-<li><p>I found 1 state where I believe the poilcy was not correct.
- example : state : ('red', 'forward', 'left', 'forward') which has action with maximum Q value as : right. I my opinion agent should not take any action as it should be moving forward and the light is red.</p>
+<li><p>I found 1 state where I believe the poilcy may not be optimum.</p>
+
+<pre><code>         example : state : ('green', 'right', 'forward', 'left')
+      -- forward : 0.01
+      -- None : -3.83
+      -- right : 0.32
+      -- left : 0.00
+</code></pre>
+<p>which has action with maximum Q value as : right. In my opinion agent should go forward as the trafic from front is coming straight and trafic from left is going on right side, agent can either go forward or in the right. If my goal is one block in the left moving forward seems like much more efficient than moving right, as it would just take us in the opposite direction of the goal.</p>
 </li>
 <li><p>Example Policy:</p>
 
